@@ -54,6 +54,7 @@ export default function Users() {
   const [hasAssignedClient, setHasAssignedClient] = useState<boolean>(true);
   const [hasPermissions, setHasPermissions] = useState<boolean>(true);
   const [permOpenId, setPermOpenId] = useState<string | null>(null);
+  const [allClients, setAllClients] = useState<string[]>([]);
 
   const fetchPage = async (pageIndex: number) => {
     setLoading(true);
@@ -151,7 +152,7 @@ export default function Users() {
         <CardHeader>
           <CardTitle className="text-lg">عدد المستخدمين: {count}</CardTitle>
           {!hasAssignedClient && (
-            <div className="text-sm text-warning mt-2">حقل الزبون المخصص غير موجود في profiles. يمكن إضافته لاحقاً.</div>
+            <div className="text-sm text-warning mt-2">حقل ا��زبون المخصص غير موجود في profiles. يمكن إضافته لاحقاً.</div>
           )}
           {!hasPermissions && (
             <div className="text-sm text-warning mt-1">حقل الصلاحيات غير موجود في profiles. يمكن إضافته لاحقاً.</div>
