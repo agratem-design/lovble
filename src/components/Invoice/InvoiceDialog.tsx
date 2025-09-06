@@ -15,6 +15,17 @@ function format(n: number | null | undefined) {
   return (n ?? 0).toLocaleString();
 }
 
+function formatMonths(m: number) {
+  switch (m) {
+    case 1: return 'شهر';
+    case 2: return 'شهران';
+    case 3: return '3 ��شهر';
+    case 6: return '6 أشهر';
+    case 12: return 'سنة';
+    default: return `${m} أشهر`;
+  }
+}
+
 function buildInvoiceHtml(props: Props) {
   const { items, monthsById, customerById } = props;
   const rows = items.map((b) => {
@@ -34,6 +45,7 @@ function buildInvoiceHtml(props: Props) {
       <td class="cell">${(b as any).district || ''}</td>
       <td class="cell">${b.location || ''}</td>
       <td class="cell">${b.size}${(b as any).level ? ' / ' + (b as any).level : ''}</td>
+      <td class="cell">${formatMonths(months)}</td>
       <td class="cell">${format(unit)} د.ل</td>
       <td class="cell">${b.status === 'rented' ? 'محجوز' : b.status === 'maintenance' ? 'صيانة' : 'متاح'}</td>
     </tr>
@@ -77,6 +89,7 @@ function buildInvoiceHtml(props: Props) {
             <th>المنطقة</th>
             <th>أقرب نقطة دالة</th>
             <th>المقاس</th>
+            <th>المدة</th>
             <th>السعر</th>
             <th>الحالة</th>
           </tr>
@@ -86,7 +99,7 @@ function buildInvoiceHtml(props: Props) {
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7" style="padding:8px;text-align:left">الإجمالي الكلي</td>
+            <td colspan="8" style="padding:8px;text-align:left">الإجمالي الكلي</td>
             <td style="padding:8px;text-align:right">${format(grand)} د.ل</td>
           </tr>
         </tfoot>
