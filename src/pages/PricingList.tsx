@@ -127,7 +127,7 @@ export default function PricingList() {
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="outline" className="ml-2" onClick={() => { const name = prompt('اسم ال��ئة الجديدة:'); if(!name) return; setOtherCustomer(name); setExtraCustomers(prev=>{ const next=Array.from(new Set([...prev,name])); localStorage.setItem(extraCustomersLsKey, JSON.stringify(next)); return next; }); }}>إضافة فئة</Button>
+              <Button variant="outline" className="ml-2" onClick={() => { const name = prompt('اسم الفئة الجديدة:'); if(!name) return; setOtherCustomer(name); setExtraCustomers(prev=>{ const next=Array.from(new Set([...prev,name])); localStorage.setItem(extraCustomersLsKey, JSON.stringify(next)); return next; }); }}>إضافة فئة</Button>
               <Button variant="outline" onClick={() => { const sz = prompt('أدخل المقاس الجديد (مثال 4x12):'); if(!sz) return; setCustomSizes(prev=>{ const list = Array.from(new Set([...(prev[selectedLevel]||[]), sz])); const next = { ...prev, [selectedLevel]: list }; localStorage.setItem(customSizesLsKey, JSON.stringify(next)); return next; }); }}>إضافة مقاس</Button>
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function PricingList() {
               <tbody>
                 {sizesForLevel.map(size => (
                   <tr key={size} className="border-b hover:bg-background/50">
-                    {(otherCustomer ? [otherCustomer] : PRIMARY_CUSTOMERS).map(c => {
+                    {(otherCustomer === PRIMARY_SENTINEL ? PRIMARY_CUSTOMERS : [otherCustomer]).map(c => {
                       const k = keyFor(size, c);
                       const isEditing = editing && editing.key === k && editing.month === selectedMonthKey;
                       const current = getVal(size, c, selectedMonthKey);
