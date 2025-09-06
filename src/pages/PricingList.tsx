@@ -39,6 +39,14 @@ export default function PricingList() {
   const [selectedLevel, setSelectedLevel] = useState<string>(allLevels[0] || 'A');
   const [selectedMonthKey, setSelectedMonthKey] = useState<MonthKey>('شهر واحد');
   const [sizeFilter, setSizeFilter] = useState<string[]>([]);
+  const [otherCustomer, setOtherCustomer] = useState<string>('');
+
+  const [extraCustomers, setExtraCustomers] = useState<string[]>(() => {
+    try { const raw = localStorage.getItem(extraCustomersLsKey); return raw ? JSON.parse(raw) : []; } catch { return []; }
+  });
+  const [customSizes, setCustomSizes] = useState<Record<string, string[]>>(() => {
+    try { const raw = localStorage.getItem(customSizesLsKey); return raw ? JSON.parse(raw) : {}; } catch { return {}; }
+  });
 
   const [overrides, setOverrides] = useState<OverrideMap>(() => {
     try {
