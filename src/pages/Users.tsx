@@ -64,7 +64,7 @@ export default function Users() {
     // حاول أولاً مع assigned_client، وإن لم يوجد العمود فfallback بدونه
     let resp = await supabase
       .from('profiles')
-      .select('id,name,email,role,created_at', { count: 'exact' })
+      .select('id,name,email,role,created_at,allowed_clients,price_tier', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(from, to);
 
@@ -152,7 +152,7 @@ export default function Users() {
         <CardHeader>
           <CardTitle className="text-lg">عدد المستخدمين: {count}</CardTitle>
           {!hasAssignedClient && (
-            <div className="text-sm text-warning mt-2">حقل ا��زبون المخصص غير موجود في profiles. يمكن إضافته لاحقاً.</div>
+            <div className="text-sm text-warning mt-2">حقل الزبون المخصص غير موجود في profiles. يمكن إضافته لاحقاً.</div>
           )}
           {!hasPermissions && (
             <div className="text-sm text-warning mt-1">حقل الصلاحيات غير موجود في profiles. يمكن إضافته لاحقاً.</div>
@@ -171,7 +171,7 @@ export default function Users() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>الاسم</TableHead>
-                    <TableHead>البريد الإلكتروني</TableHead>
+                    <TableHead>البريد الإلك��روني</TableHead>
                     <TableHead>الدور</TableHead>
                     <TableHead>تاريخ الإنشاء</TableHead>
                     <TableHead>المعرف</TableHead>
