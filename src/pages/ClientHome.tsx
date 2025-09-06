@@ -36,6 +36,7 @@ export default function ClientHome() {
   const pageSize = 10;
   const { toast } = useToast();
   const { isAdmin, user, profile } = useAuth();
+  const defaultCustomer = (profile?.price_tier as CustomerType) || CUSTOMERS[0];
 
   useEffect(() => {
     const fetchBillboards = async () => {
@@ -168,7 +169,7 @@ export default function ClientHome() {
       description: `تم إرسال طلب حجز ${selectedBillboards.length} لوحة بإجمالي ${getSelectedTotal().toLocaleString()} د.ل`,
     });
 
-    // إعادة تعيين الاختيارات
+    // إعادة تعي��ن الاختيارات
     setSelectedBillboards([]);
   };
 
@@ -270,7 +271,7 @@ export default function ClientHome() {
           </Card>
         </div>
 
-        {/* أدوات ��لبحث والتصفية */}
+        {/* أدوات البحث والتصفية */}
         <Card className="bg-gradient-card border-0 shadow-card mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -565,7 +566,7 @@ export default function ClientHome() {
                           const months = packageById[billboard.id] || 1;
                           const customer = customerTypeById[billboard.id] || CUSTOMERS[0];
                           const price = getPriceFor(billboard.size, (billboard as any).level, customer, months) ?? 0;
-                          toast({ title: 'تم إضافة حجز', description: `تم اختيار ${customer} لمدة ${months} شهر بإجم��لي ${price.toLocaleString()} د.ل` });
+                          toast({ title: 'تم إضافة حجز', description: `تم اختيار ${customer} لمدة ${months} شهر بإجمالي ${price.toLocaleString()} د.ل` });
                         }}
                       >
                         حجز سريع
