@@ -97,8 +97,8 @@ export default function ClientHome() {
     const matchesClient = selectedClients.length === 0 || (billboard as any).clientName && selectedClients.includes((billboard as any).clientName);
     const matchesContract = selectedContracts.length === 0 || (billboard as any).contractNumber && selectedContracts.includes((billboard as any).contractNumber);
 
-    const assigned = !isAdmin ? ((profile as any)?.assigned_client || null) : null;
-    const assignedMatch = isAdmin || !assigned || (((billboard as any).clientName) && ((billboard as any).clientName === assigned));
+    const allowed = !isAdmin ? ((profile as any)?.allowed_clients as string[] | null) : null;
+    const assignedMatch = isAdmin || !allowed || allowed.length === 0 || (((billboard as any).clientName) && allowed.includes((billboard as any).clientName));
 
     return matchesSearch && matchesCity && matchesSize && statusMatch && matchesClient && matchesContract && assignedMatch;
   });
@@ -270,7 +270,7 @@ export default function ClientHome() {
           </Card>
         </div>
 
-        {/* أدوات البحث والتصفية */}
+        {/* أدوات ��لبحث والتصفية */}
         <Card className="bg-gradient-card border-0 shadow-card mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -331,7 +331,7 @@ export default function ClientHome() {
                   options={contracts.map(c => ({ label: c, value: c }))}
                   value={selectedContracts}
                   onChange={setSelectedContracts}
-                  placeholder={selectedClients.length ? "عقود العم��ل" : "أرقام العقود"}
+                  placeholder={selectedClients.length ? "عقود العميل" : "أرقام العقود"}
                 />
               )}
 
@@ -565,7 +565,7 @@ export default function ClientHome() {
                           const months = packageById[billboard.id] || 1;
                           const customer = customerTypeById[billboard.id] || CUSTOMERS[0];
                           const price = getPriceFor(billboard.size, (billboard as any).level, customer, months) ?? 0;
-                          toast({ title: 'تم إضافة حجز', description: `تم اختيار ${customer} لمدة ${months} شهر بإجمالي ${price.toLocaleString()} د.ل` });
+                          toast({ title: 'تم إضافة حجز', description: `تم اختيار ${customer} لمدة ${months} شهر بإجم��لي ${price.toLocaleString()} د.ل` });
                         }}
                       >
                         حجز سريع
