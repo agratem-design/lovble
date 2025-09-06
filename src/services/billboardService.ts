@@ -176,7 +176,8 @@ function processBillboardFromSupabase(row: any, index: number): Billboard {
   const name = row['Billboard_Name'] ?? row['name'] ?? row['لوحة'] ?? `لوحة ${index + 1}`;
   const location = row['Nearest_Landmark'] ?? row['District'] ?? row['Municipality'] ?? row['City'] ?? 'غير محدد';
   const municipality = row['Municipality'] ?? row['municipality'] ?? '';
-  const city = row['City'] ?? row['city'] ?? '��رابلس';
+  const district = row['District'] ?? row['district'] ?? '';
+  const city = row['City'] ?? row['city'] ?? 'طرابلس';
   const rawSize = row['Size'] ?? row['المقاس مع الدغاية'] ?? row['Order_Size'] ?? '12X4';
   const size = normalizeBillboardSize(rawSize);
   const coordinates = row['GPS_Coordinates'] ?? row['GPS'] ?? '';
@@ -355,7 +356,7 @@ export async function loadBillboards(): Promise<Billboard[]> {
     }
 
     if (dbError) {
-      console.warn('[Service] تعذر جلب Supabase، سيتم استخدام Google Sheets. الخطأ:', dbError.message);
+      console.warn('[Service] تعذر جلب Supabase، سي��م استخدام Google Sheets. الخطأ:', dbError.message);
     } else {
       console.log('[Service] جدول billboards فارغ أو غير متاح، سيتم استخدام Google Sheets');
     }
