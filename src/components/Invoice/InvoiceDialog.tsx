@@ -68,7 +68,6 @@ function buildInvoiceHtml(props: Props) {
       </div>
       <div class="brand" style="margin-bottom:8px">
         <img class="brand-mark" src="https://cdn.builder.io/api/v1/image/assets%2Ffc68c2d70dd74affa9a5bbf7eee66f4a%2F8d67e8499cfc4a8caf22e6c6835ab764?format=webp&width=256" alt="شعار الفارس الذهبي" />
-        <div class="title">الفارس الذهبي</div>
       </div>
       <table>
         <thead>
