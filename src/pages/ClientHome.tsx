@@ -166,7 +166,7 @@ export default function ClientHome() {
 
     toast({
       title: "تم إرسال طلب الحجز",
-      description: `تم إرسال طلب حجز ${selectedBillboards.length} لوحة بإجمالي ${getSelectedTotal().toLocaleString()} د.ل`,
+      description: `تم إرسال طلب حجز ${selectedBillboards.length} لوحة بإجم��لي ${getSelectedTotal().toLocaleString()} د.ل`,
     });
 
     // إعادة تعيين الاختيارات
@@ -197,7 +197,7 @@ export default function ClientHome() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">منصة اللوحات الإعلانية</h1>
-                <p className="text-white/80">اكتشف أفضل المواقع الإعلانية في لي��يا</p>
+                <p className="text-white/80">اكتشف أفضل المواقع الإعلانية في ليبيا</p>
               </div>
             </div>
             
@@ -648,7 +648,7 @@ export default function ClientHome() {
                       </SelectContent>
                     </Select>
 
-                    <Select value={String((() => { const anyId = selectedBillboards[0]; return (customerTypeById[anyId] || CUSTOMERS[0]); })())} onValueChange={(v) => {
+                    <Select value={String((() => { const anyId = selectedBillboards[0]; return (customerTypeById[anyId] || defaultCustomer); })())} onValueChange={(v) => {
                       const customer = v as any;
                       setCustomerTypeById(prev => {
                         const next = { ...prev } as any;
