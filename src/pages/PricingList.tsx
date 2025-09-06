@@ -61,6 +61,38 @@ export default function PricingList() {
   });
   const [editing, setEditing] = useState<{ key: string; month: MonthKeyAll } | null>(null);
 
+  const [addCatOpen, setAddCatOpen] = useState(false);
+  const [newCatName, setNewCatName] = useState('');
+  const [addSizeOpen, setAddSizeOpen] = useState(false);
+  const [newSize, setNewSize] = useState('');
+
+  const saveNewCategory = () => {
+    const name = newCatName.trim();
+    if (!name) return;
+    if (PRIMARY_CUSTOMERS.includes(name)) { setOtherCustomer(PRIMARY_SENTINEL); setAddCatOpen(false); setNewCatName(''); return; }
+    if (!extraCustomers.includes(name)) {
+      const next = [...extraCustomers, name];
+      setExtraCustomers(next);
+      localStorage.setItem(extraCustomersLsKey, JSON.stringify(next));
+    }
+    setOtherCustomer(name);
+    setAddCatOpen(false);
+    setNewCatName('');
+  };
+
+  const saveNewSize = () => {
+    const sz = newSize.trim();
+    if (!sz) return;
+    setCustomSizes(prev => {
+      const list = Array.from(new Set([...(prev[selectedLevel] || []), sz]));
+      const next = { ...prev, [selectedLevel]: list };
+      localStorage.setItem(customSizesLsKey, JSON.stringify(next));
+      return next;
+    });
+    setAddSizeOpen(false);
+    setNewSize('');
+  };
+
   const sizesForLevel = useMemo(() => {
     const set = new Set(
       PRICING.filter(r => r['المستوى'] === selectedLevel).map(r => r['المقاس'])
