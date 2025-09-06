@@ -59,7 +59,7 @@ export default function ClientHome() {
     fetchBillboards();
   }, []);
 
-  // للأدمن: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول تحميل
+  // للأدمن: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول ��حميل
   useEffect(() => {
     if (isAdmin && selectedStatuses.length === 1 && selectedStatuses[0] === 'available') {
       setSelectedStatuses(['rented', 'near']);
@@ -276,7 +276,7 @@ export default function ClientHome() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Filter className="h-5 w-5 text-primary" />
-              ��بحث عن اللوحة المناسبة
+              ابحث عن اللوحة المناسبة
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -444,7 +444,7 @@ export default function ClientHome() {
                     {(billboard as any).district || (billboard as any).municipality ? (
                       <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                         {(billboard as any).district && (
-                          <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5">الحي: {(billboard as any).district}</span>
+                          <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5">{(billboard as any).district}</span>
                         )}
                         {(billboard as any).municipality && (
                           <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5">البلدية: {(billboard as any).municipality}</span>
