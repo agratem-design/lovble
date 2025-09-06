@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import MultiSelect from '@/components/ui/multi-select';
-import { PRICING, CustomerType } from '@/data/pricing';
+import { PRICING, CustomerType, CUSTOMERS } from '@/data/pricing';
 
 function normalize(val: any): number | null {
   if (val === null || val === undefined) return null;
@@ -11,60 +10,100 @@ function normalize(val: any): number | null {
   return isNaN(num) ? null : num;
 }
 
-export default function PricingList() {
-  const [sizes, setSizes] = useState<string[]>([]);
-  const [customers, setCustomers] = useState<CustomerType[]>([] as any);
-  const [levelFilter, setLevelFilter] = useState<string[]>([]);
-  const allSizes = useMemo(() => Array.from(new Set(PRICING.map(p => p['المقاس']))), []);
-  const allCustomers = useMemo(() => Array.from(new Set(PRICING.map(p => p['الزبون'] as CustomerType))), []);
-  const allLevels = useMemo(() => Array.from(new Set(PRICING.map(p => p['المستوى']))), []);
+const MONTH_OPTIONS = [
+  { key: 'شهر واحد', label: 'شهرياً', months: 1 },
+  { key: '2 أشهر', label: 'كل شهرين', months: 2 },
+  { key: '3 أشهر', label: 'كل 3 أشهر', months: 3 },
+  { key: '6 أشهر', label: 'كل 6 أشهر', months: 6 },
+  { key: 'سنة كاملة', label: 'سنوي', months: 12 },
+] as const;
 
-  const rows = PRICING.filter(r =>
-    (sizes.length === 0 || sizes.includes(r['المقاس'])) &&
-    (customers.length === 0 || customers.includes(r['الزبون'] as CustomerType)) &&
-    (levelFilter.length === 0 || levelFilter.includes(r['المستوى']))
-  );
+type MonthKey = typeof MONTH_OPTIONS[number]['key'];
+
+export default function PricingList() {
+  const allLevels = useMemo(() => Array.from(new Set(PRICING.map(p => p['المستوى']))), []);
+  const allSizes = useMemo(() => Array.from(new Set(PRICING.map(p => p['المقاس']))), []);
+
+  const [selectedLevel, setSelectedLevel] = useState<string>(allLevels[0] || 'A');
+  const [selectedMonthKey, setSelectedMonthKey] = useState<MonthKey>('شهر واحد');
+  const [sizeFilter, setSizeFilter] = useState<string[]>([]);
+
+  const sizesForLevel = useMemo(() => {
+    const set = new Set(
+      PRICING.filter(r => r['المستوى'] === selectedLevel).map(r => r['المقاس'])
+    );
+    const arr = Array.from(set);
+    return sizeFilter.length ? arr.filter(s => sizeFilter.includes(s)) : arr;
+  }, [selectedLevel, sizeFilter]);
+
+  const priceFor = (size: string, customer: CustomerType): string => {
+    const row = PRICING.find(r => r['المقاس'] === size && r['المستوى'] === selectedLevel && r['الزبون'] === customer);
+    const v = row ? normalize((row as any)[selectedMonthKey]) : null;
+    return v == null ? '—' : `${v.toLocaleString()} د.ل`;
+  };
 
   return (
     <div className="space-y-6">
       <Card className="bg-gradient-card border-0 shadow-card">
-        <CardHeader>
-          <CardTitle>قائمة الأسعار</CardTitle>
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-2xl">الأسعار</CardTitle>
+              <p className="text-muted-foreground text-sm">إدارة أسعار الخدمات الإعلانية حسب فئة العميل</p>
+            </div>
+            <div className="flex items-center gap-2">
+              {MONTH_OPTIONS.map(opt => (
+                <button
+                  key={opt.key}
+                  className={`px-3 py-1.5 rounded-lg text-sm border transition-fast ${selectedMonthKey === opt.key ? 'bg-primary text-primary-foreground border-primary' : 'bg-background text-foreground border-border hover:bg-muted'}`}
+                  onClick={() => setSelectedMonthKey(opt.key)}
+                >
+                  {opt.months === 1 ? 'شهرياً' : opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="flex items-center justify-between bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-400/40 rounded-xl px-4 py-3">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-2 bg-amber-500 text-white font-semibold rounded-lg px-3 py-1 shadow-sm">مستوى {selectedLevel}</span>
+              <span className="text-sm text-muted-foreground">أسعار الأحجام حسب فئة العميل</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {allLevels.map(lvl => (
+                <button
+                  key={lvl}
+                  onClick={() => setSelectedLevel(lvl)}
+                  className={`px-3 py-1.5 rounded-lg text-sm border transition-fast ${lvl === selectedLevel ? 'bg-primary text-primary-foreground border-primary' : 'bg-background text-foreground border-border hover:bg-muted'}`}
+                >
+                  {lvl}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <MultiSelect options={allSizes.map(s => ({label: s, value: s}))} value={sizes} onChange={setSizes} placeholder="المقاسات" />
-            <MultiSelect options={allCustomers.map(s => ({label: s, value: s}))} value={customers as any} onChange={setCustomers as any} placeholder="نوع الزبون" />
-            <MultiSelect options={allLevels.map(s => ({label: s, value: s}))} value={levelFilter} onChange={setLevelFilter} placeholder="المستوى" />
+            <MultiSelect options={allSizes.map(s => ({ label: s, value: s }))} value={sizeFilter} onChange={setSizeFilter} placeholder="تصفية الأحجام" />
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm text-right">
               <thead>
-                <tr className="border-b text-right">
-                  <th className="p-2">المقاس</th>
-                  <th className="p-2">المستوى</th>
-                  <th className="p-2">الزبون</th>
-                  <th className="p-2">شهر واحد</th>
-                  <th className="p-2">2 أشهر</th>
-                  <th className="p-2">3 أشهر</th>
-                  <th className="p-2">6 أشهر</th>
-                  <th className="p-2">سنة كاملة</th>
-                  <th className="p-2">يوم واحد</th>
+                <tr className="bg-muted/50 border-b">
+                  {CUSTOMERS.map(c => (
+                    <th key={c} className="p-3 font-medium">{c}</th>
+                  ))}
+                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">الحجم</th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map((r) => (
-                  <tr key={r.id} className="border-b hover:bg-background/50">
-                    <td className="p-2 font-medium">{r['المقاس']}</td>
-                    <td className="p-2">{r['المستوى']}</td>
-                    <td className="p-2">{r['الزبون']}</td>
-                    <td className="p-2">{normalize(r['شهر واحد'])?.toLocaleString() || '-'}</td>
-                    <td className="p-2">{normalize(r['2 أشهر'])?.toLocaleString() || '-'}</td>
-                    <td className="p-2">{normalize(r['3 أشهر'])?.toLocaleString() || '-'}</td>
-                    <td className="p-2">{normalize(r['6 أشهر'])?.toLocaleString() || '-'}</td>
-                    <td className="p-2">{normalize(r['سنة كاملة'])?.toLocaleString() || '-'}</td>
-                    <td className="p-2">{normalize(r['يوم واحد'])?.toLocaleString() || '-'}</td>
+                {sizesForLevel.map(size => (
+                  <tr key={size} className="border-b hover:bg-background/50">
+                    {CUSTOMERS.map(c => (
+                      <td key={c} className="p-3">{priceFor(size, c)}</td>
+                    ))}
+                    <td className="p-3 text-center font-semibold bg-amber-50 dark:bg-white/5">{size}</td>
                   </tr>
                 ))}
               </tbody>
