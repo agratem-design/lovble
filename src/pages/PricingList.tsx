@@ -36,7 +36,7 @@ const extraCustomersLsKey = 'pricing_extra_customers_v1';
 const customSizesLsKey = 'pricing_custom_sizes_v1';
 
 export default function PricingList() {
-  const allLevels = useMemo(() => Array.from(new Set(PRICING.map(p => p['المستوى']))), []);
+  const allLevels = useMemo(() => Array.from(new Set(PRICING.map(p => p['ال��ستوى']))), []);
   const allSizes = useMemo(() => Array.from(new Set(PRICING.map(p => p['المقاس']))), []);
 
   const [selectedLevel, setSelectedLevel] = useState<string>(allLevels[0] || 'A');
@@ -233,6 +233,32 @@ export default function PricingList() {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={addCatOpen} onOpenChange={setAddCatOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>إضافة فئة جديدة</DialogTitle>
+          </DialogHeader>
+          <Input placeholder="اسم الفئة (مثال: المدينة)" value={newCatName} onChange={e=>setNewCatName(e.target.value)} />
+          <DialogFooter>
+            <Button variant="outline" onClick={()=>setAddCatOpen(false)}>إلغاء</Button>
+            <Button onClick={saveNewCategory}>حفظ</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={addSizeOpen} onOpenChange={setAddSizeOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>إضافة مقاس</DialogTitle>
+          </DialogHeader>
+          <Input placeholder="أدخل المقاس (مثال 4x12)" value={newSize} onChange={e=>setNewSize(e.target.value)} />
+          <DialogFooter>
+            <Button variant="outline" onClick={()=>setAddSizeOpen(false)}>إلغاء</Button>
+            <Button onClick={saveNewSize}>حفظ</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
