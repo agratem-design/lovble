@@ -161,8 +161,8 @@ export default function PricingList() {
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="outline" className="ml-2" onClick={() => { const name = prompt('اسم الفئة الجديدة:'); if(!name) return; setOtherCustomer(name); setExtraCustomers(prev=>{ const next=Array.from(new Set([...prev,name])); localStorage.setItem(extraCustomersLsKey, JSON.stringify(next)); return next; }); }}>إضافة فئة</Button>
-              <Button variant="outline" onClick={() => { const sz = prompt('أدخل المقاس الجديد (مثال 4x12):'); if(!sz) return; setCustomSizes(prev=>{ const list = Array.from(new Set([...(prev[selectedLevel]||[]), sz])); const next = { ...prev, [selectedLevel]: list }; localStorage.setItem(customSizesLsKey, JSON.stringify(next)); return next; }); }}>إضافة مقاس</Button>
+              <Button variant="outline" className="ml-2" onClick={() => setAddCatOpen(true)}>إضافة فئة</Button>
+              <Button variant="outline" onClick={() => setAddSizeOpen(true)}>إضافة مقاس</Button>
             </div>
           </div>
         </CardHeader>
