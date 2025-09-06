@@ -46,7 +46,7 @@ export default function ClientHome() {
       } catch (error) {
         console.error('خطأ في تحميل اللوحات:', error);
         toast({
-          title: "خط�� في التحميل",
+          title: "خطأ في التحميل",
           description: "فشل في تحميل بيانات اللوحات الإعلانية",
           variant: "destructive"
         });
@@ -56,7 +56,7 @@ export default function ClientHome() {
     };
 
     fetchBillboards();
-  }, [toast]);
+  }, []);
 
   // للأدمن: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول تحميل
   useEffect(() => {
@@ -177,7 +177,7 @@ export default function ClientHome() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-6"></div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">جاري ��حميل اللوحات الإعلانية</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">جاري تحميل اللوحات الإعلانية</h2>
           <p className="text-muted-foreground">يرجى الانتظار...</p>
         </div>
       </div>
@@ -331,7 +331,7 @@ export default function ClientHome() {
                   options={contracts.map(c => ({ label: c, value: c }))}
                   value={selectedContracts}
                   onChange={setSelectedContracts}
-                  placeholder={selectedClients.length ? "عقود العميل" : "أرقام العقود"}
+                  placeholder={selectedClients.length ? "عقود العم��ل" : "أرقام العقود"}
                 />
               )}
 
@@ -622,7 +622,7 @@ export default function ClientHome() {
                       {selectedBillboards.length} لوحة مختارة
                     </h3>
                     <p className="text-white/80 text-sm">
-                      الإجمالي: {getSelectedTotal().toLocaleString()} ��.ل
+                      الإجمالي: {getSelectedTotal().toLocaleString()} د.ل
                     </p>
                   </div>
 
