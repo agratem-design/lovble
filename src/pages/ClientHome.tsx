@@ -197,7 +197,7 @@ export default function ClientHome() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">منصة اللوحات الإعلانية</h1>
-                <p className="text-white/80">اكتشف أفضل المواقع الإعلانية في ليبيا</p>
+                <p className="text-white/80">اكتشف أفضل المواقع الإعلانية في لي��يا</p>
               </div>
             </div>
             
@@ -489,7 +489,7 @@ export default function ClientHome() {
                             <span className="font-bold text-primary text-xl">
                               {(() => {
                                 const months = packageById[billboard.id] || 1;
-                                const customer = customerTypeById[billboard.id] || CUSTOMERS[0];
+                                const customer = customerTypeById[billboard.id] || defaultCustomer;
                                 const price = getPriceFor(billboard.size, (billboard as any).level, customer, months);
                                 return (price ?? 0).toLocaleString();
                               })()} د.ل
