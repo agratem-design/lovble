@@ -62,9 +62,10 @@ export default function PricingList() {
     const set = new Set(
       PRICING.filter(r => r['المستوى'] === selectedLevel).map(r => r['المقاس'])
     );
+    (customSizes[selectedLevel] || []).forEach(s => set.add(s));
     const arr = Array.from(set);
     return sizeFilter.length ? arr.filter(s => sizeFilter.includes(s)) : arr;
-  }, [selectedLevel, sizeFilter]);
+  }, [selectedLevel, sizeFilter, customSizes]);
 
   const keyFor = (size: string, customer: CustomerType) => `${selectedLevel}__${size}__${customer}`;
 
