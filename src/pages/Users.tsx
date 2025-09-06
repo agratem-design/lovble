@@ -218,6 +218,32 @@ export default function Users() {
                           </SelectContent>
                         </Select>
                       </TableCell>
+
+                      <TableCell className="min-w-[240px]">
+                        <MultiSelect
+                          options={allClients.map(c => ({ label: c, value: c }))}
+                          value={(r.allowed_clients || []) as string[]}
+                          onChange={(vals) => setRows(prev => prev.map(x => x.id === r.id ? { ...x, allowed_clients: vals } : x))}
+                          placeholder="اختر الزبائن"
+                        />
+                      </TableCell>
+
+                      <TableCell className="min-w-[160px]">
+                        <Select
+                          value={r.price_tier || ''}
+                          onValueChange={(val) => setRows((prev) => prev.map((x) => x.id === r.id ? { ...x, price_tier: val } : x))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="اختر الفئة" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {CUSTOMERS.map(c => (
+                              <SelectItem key={c} value={c}>{c}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </TableCell>
+
                       <TableCell>{r.created_at ? new Date(r.created_at).toLocaleString() : '—'}</TableCell>
                       <TableCell className="font-mono text-xs">{r.id}</TableCell>
                       <TableCell>
