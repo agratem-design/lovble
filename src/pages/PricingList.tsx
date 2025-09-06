@@ -194,7 +194,7 @@ export default function PricingList() {
               <thead>
                 <tr className="bg-muted/50 border-b">
                   {(otherCustomer === PRIMARY_SENTINEL ? PRIMARY_CUSTOMERS : [otherCustomer]).map(c => (
-                    <th key={c} className="p-3 font-medium">{c}</th>
+                    <th key={`head-${c}`} className="p-3 font-medium">{c}</th>
                   ))}
                   <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">الحجم</th>
                 </tr>
