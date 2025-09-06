@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 const normalizeBillboardSize = (size: string): string => {
   if (!size) return '4x12';
 
-  // تحويل النص إلى صغير وإزالة المسافات
+  // تحويل النص إلى صغير وإ��الة المسافات
   let normalized = size.toString().trim().toLowerCase();
 
   // استبدال X بـ x
@@ -40,7 +40,7 @@ const normalizeBillboardSize = (size: string): string => {
   if (parts.length === 2) {
     const [width, height] = parts.map(p => parseInt(p)).filter(n => !isNaN(n));
     if (width && height) {
-      // ترتيب الأبعاد: العرض × ال��رتفاع (الأصغر أولاً عادة)
+      // ترتيب الأبعاد: العرض × الارتفاع (الأصغر أولاً عادة)
       if (width <= height) {
         return `${width}x${height}`;
       } else {
@@ -128,7 +128,7 @@ async function readCsvFromUrl(url: string, timeoutMs = 10000) {
       const line = lines[i].trim();
       if (!line) continue;
 
-      // تحليل أفضل للـ CSV مع مراعاة النصوص المقتبسة
+      // تحليل أفضل للـ CSV مع مراعاة النصوص المقتب��ة
       const values = [];
       let currentValue = '';
       let insideQuotes = false;
@@ -174,7 +174,7 @@ function normalizeStatus(input: string | null | undefined): Billboard['status'] 
 function processBillboardFromSupabase(row: any, index: number): Billboard {
   const id = row['ID'] ?? row['id'] ?? row['Id'] ?? `billboard-${index + 1}`;
   const name = row['Billboard_Name'] ?? row['name'] ?? row['لوحة'] ?? `لوحة ${index + 1}`;
-  const location = row['Nearest_Landmark'] ?? row['District'] ?? row['Municipality'] ?? row['City'] ?? 'غير محدد';
+  const location = row['Nearest_Landmark'] ?? row['District'] ?? row['Municipality'] ?? row['City'] ?? '';
   const municipality = row['Municipality'] ?? row['municipality'] ?? '';
   const district = row['District'] ?? row['district'] ?? '';
   const city = row['City'] ?? row['city'] ?? 'طرابلس';
@@ -253,8 +253,8 @@ function processBillboardFromSupabase(row: any, index: number): Billboard {
 function processBillboardFromCSV(row: any, index: number): Billboard {
   const id = row['ر.م'] || `billboard-${index + 1}`;
   const name = row['اسم لوحة'] || `لوحة ${index + 1}`;
-  const location = row['اقرب نقطة ��الة'] || 'غير محدد';
-  const municipality = row['البلدية'] || 'غير محدد';
+  const location = row['اقرب نقطة دالة'] || '';
+  const municipality = row['البلدية'] || '';
   const city = row['مدينة'] || 'طرابلس';
   const area = row['منطقة'] || row['الحي'] || row['District'] || municipality;
   const rawSize = row['حجم'] || '12X4';
@@ -405,7 +405,7 @@ export async function loadBillboards(): Promise<Billboard[]> {
       },
       {
         id: '2',
-        name: 'لوحة شارع الجمهورية',
+        name: 'لوحة شار�� الجمهورية',
         location: 'شارع الجمهورية، طرابلس',
         size: '5x13',
         price: 2500,
