@@ -127,7 +127,7 @@ export default function PricingList() {
                   ))}
                 </SelectContent>
               </Select>
-              <Button variant="outline" className="ml-2" onClick={() => { const name = prompt('اسم الفئة الجديدة:'); if(!name) return; setOtherCustomer(name); setExtraCustomers(prev=>{ const next=Array.from(new Set([...prev,name])); localStorage.setItem(extraCustomersLsKey, JSON.stringify(next)); return next; }); }}>إضافة فئة</Button>
+              <Button variant="outline" className="ml-2" onClick={() => { const name = prompt('اسم ال��ئة الجديدة:'); if(!name) return; setOtherCustomer(name); setExtraCustomers(prev=>{ const next=Array.from(new Set([...prev,name])); localStorage.setItem(extraCustomersLsKey, JSON.stringify(next)); return next; }); }}>إضافة فئة</Button>
               <Button variant="outline" onClick={() => { const sz = prompt('أدخل المقاس الجديد (مثال 4x12):'); if(!sz) return; setCustomSizes(prev=>{ const list = Array.from(new Set([...(prev[selectedLevel]||[]), sz])); const next = { ...prev, [selectedLevel]: list }; localStorage.setItem(customSizesLsKey, JSON.stringify(next)); return next; }); }}>إضافة مقاس</Button>
             </div>
           </div>
@@ -159,10 +159,10 @@ export default function PricingList() {
             <table className="w-full text-sm text-right">
               <thead>
                 <tr className="bg-muted/50 border-b">
-                  {(otherCustomer ? [otherCustomer] : PRIMARY_CUSTOMERS).map(c => (
+                  {(otherCustomer === PRIMARY_SENTINEL ? PRIMARY_CUSTOMERS : [otherCustomer]).map(c => (
                     <th key={c} className="p-3 font-medium">{c}</th>
                   ))}
-                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">��لحجم</th>
+                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">الحجم</th>
                 </tr>
               </thead>
               <tbody>
