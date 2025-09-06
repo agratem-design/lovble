@@ -192,6 +192,8 @@ export default function Users() {
                     <TableHead>الاسم</TableHead>
                     <TableHead>البريد الإلكتروني</TableHead>
                     <TableHead>الدور</TableHead>
+                    <TableHead>الزبائن المسموح بهم</TableHead>
+                    <TableHead>فئة الأسعار</TableHead>
                     <TableHead>تاريخ الإنشاء</TableHead>
                     <TableHead>المعرف</TableHead>
                     <TableHead>إجراءات</TableHead>
