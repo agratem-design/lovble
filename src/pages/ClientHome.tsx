@@ -192,12 +192,14 @@ export default function ClientHome() {
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-glow">
-                <MapPin className="h-8 w-8 text-white" />
-              </div>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Ffc68c2d70dd74affa9a5bbf7eee66f4a%2F8d67e8499cfc4a8caf22e6c6835ab764?format=webp&width=128"
+                alt="شعار الفارس الذهبي"
+                className="w-16 h-16 rounded-2xl shadow-glow object-cover"
+              />
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">منصة اللوحات الإعلانية</h1>
-                <p className="text-white/80">اكتشف أفضل المواقع الإعلانية في ليبيا</p>
+                <h1 className="text-3xl font-bold text-white mb-2">الفارس الذهبي</h1>
+                <p className="text-white/80">الدعاية والإعلان</p>
               </div>
             </div>
             
