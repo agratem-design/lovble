@@ -59,7 +59,7 @@ export default function ClientHome() {
     fetchBillboards();
   }, []);
 
-  // للأدمن: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول ��حميل
+  // للأدمن: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول تحميل
   useEffect(() => {
     if (isAdmin && selectedStatuses.length === 1 && selectedStatuses[0] === 'available') {
       setSelectedStatuses(['rented', 'near']);
@@ -437,16 +437,18 @@ export default function ClientHome() {
                         </span>
                       ) }
                     </div>
-                    <div className="flex items-center gap-2 text-muted-foreground text-base">
-                      <MapPin className="h-4 w-4" />
-                      <span>{billboard.location}</span>
-                    </div>
-                    {(billboard as any).district || (billboard as any).municipality ? (
+                    {(billboard.location && billboard.location !== 'غير محدد') && (
+                      <div className="flex items-center gap-2 text-muted-foreground text-base">
+                        <MapPin className="h-4 w-4" />
+                        <span>{billboard.location}</span>
+                      </div>
+                    )}
+                    {(((billboard as any).district && (billboard as any).district !== 'غير محدد') || ((billboard as any).municipality && (billboard as any).municipality !== 'غير محدد')) ? (
                       <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                        {(billboard as any).district && (
+                        {(billboard as any).district && (billboard as any).district !== 'غير محدد' && (
                           <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5">{(billboard as any).district}</span>
                         )}
-                        {(billboard as any).municipality && (
+                        {(billboard as any).municipality && (billboard as any).municipality !== 'غير محدد' && (
                           <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5">البلدية: {(billboard as any).municipality}</span>
                         )}
                       </div>
