@@ -10,6 +10,12 @@ function normalize(val: any): number | null {
   return isNaN(num) ? null : num;
 }
 
+const lsKey = 'pricing_overrides_v1';
+
+type MonthKeyAll = 'شهر واحد' | '2 أشهر' | '3 أشهر' | '6 أشهر' | 'سنة كاملة' | 'يوم واحد';
+
+type OverrideMap = Record<string, Partial<Record<MonthKeyAll, number>>>; // key = `${level}__${size}__${customer}`
+
 const MONTH_OPTIONS = [
   { key: 'شهر واحد', label: 'شهرياً', months: 1 },
   { key: '2 أشهر', label: 'كل شهرين', months: 2 },
