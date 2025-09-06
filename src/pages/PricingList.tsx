@@ -67,20 +67,20 @@ export default function PricingList() {
     return sizeFilter.length ? arr.filter(s => sizeFilter.includes(s)) : arr;
   }, [selectedLevel, sizeFilter, customSizes]);
 
-  const keyFor = (size: string, customer: CustomerType) => `${selectedLevel}__${size}__${customer}`;
+  const keyFor = (size: string, customer: string) => `${selectedLevel}__${size}__${customer}`;
 
-  const getBase = (size: string, customer: CustomerType, month: MonthKeyAll): number | null => {
-    const row = PRICING.find(r => r['المقاس'] === size && r['المستوى'] === selectedLevel && r['الزبون'] === customer);
+  const getBase = (size: string, customer: string, month: MonthKeyAll): number | null => {
+    const row = PRICING.find(r => r['المقاس'] === size && r['المستوى'] === selectedLevel && r['الزبون'] === (customer as any));
     return row ? normalize((row as any)[month]) : null;
   };
 
-  const getVal = (size: string, customer: CustomerType, month: MonthKeyAll): number | null => {
+  const getVal = (size: string, customer: string, month: MonthKeyAll): number | null => {
     const k = keyFor(size, customer);
     const o = overrides[k]?.[month];
     return o ?? getBase(size, customer, month);
   };
 
-  const setVal = (size: string, customer: CustomerType, month: MonthKeyAll, value: number | null) => {
+  const setVal = (size: string, customer: string, month: MonthKeyAll, value: number | null) => {
     const k = keyFor(size, customer);
     setOverrides(prev => {
       const next: OverrideMap = { ...prev, [k]: { ...(prev[k] || {}) } };
@@ -90,7 +90,7 @@ export default function PricingList() {
     });
   };
 
-  const priceFor = (size: string, customer: CustomerType): string => {
+  const priceFor = (size: string, customer: string): string => {
     const v = getVal(size, customer, selectedMonthKey);
     return v == null ? '—' : `${v.toLocaleString()} د.ل`;
   };
@@ -102,7 +102,7 @@ export default function PricingList() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-2xl">الأسعار</CardTitle>
-              <p className="text-muted-foreground text-sm">إدارة أسعار الخدمات الإعلانية حسب فئة العميل</p>
+              <p className="text-muted-foreground text-sm">إدارة أسعار الخدمات الإعل��نية حسب فئة العميل</p>
             </div>
             <div className="flex items-center gap-2">
               {MONTH_OPTIONS.map(opt => (
@@ -114,6 +114,17 @@ export default function PricingList() {
                   {opt.months === 1 ? 'شهرياً' : opt.label}
                 </button>
               ))}
+              <div className="mx-3 h-6 w-px bg-border" />
+              <Select value={otherCustomer} onValueChange={setOtherCustomer}>
+                <SelectTrigger className="w-52">
+                  <SelectValue placeholder="فئة أخرى" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">الأساسية (عادي/مسوق/شركات)</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline" className="ml-2" onClick={() => { const name = prompt('اسم الفئة الجديدة:'); if(!name) return; setOtherCustomer(name); setExtraCustomers(prev=>{ const next=Array.from(new Set([...prev,name])); localStorage.setItem(extraCustomersLsKey, JSON.stringify(next)); return next; }); }}>إضافة فئة</Button>
+              <Button variant="outline" onClick={() => { const sz = prompt('أدخل المقاس الجديد (مثال 4x12):'); if(!sz) return; setCustomSizes(prev=>{ const list = Array.from(new Set([...(prev[selectedLevel]||[]), sz])); const next = { ...prev, [selectedLevel]: list }; localStorage.setItem(customSizesLsKey, JSON.stringify(next)); return next; }); }}>إضافة مقاس</Button>
             </div>
           </div>
         </CardHeader>
@@ -144,16 +155,16 @@ export default function PricingList() {
             <table className="w-full text-sm text-right">
               <thead>
                 <tr className="bg-muted/50 border-b">
-                  {CUSTOMERS.map(c => (
+                  {(otherCustomer ? [otherCustomer] : PRIMARY_CUSTOMERS).map(c => (
                     <th key={c} className="p-3 font-medium">{c}</th>
                   ))}
-                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">��لحجم</th>
+                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">الحجم</th>
                 </tr>
               </thead>
               <tbody>
                 {sizesForLevel.map(size => (
                   <tr key={size} className="border-b hover:bg-background/50">
-                    {CUSTOMERS.map(c => {
+                    {(otherCustomer ? [otherCustomer] : PRIMARY_CUSTOMERS).map(c => {
                       const k = keyFor(size, c);
                       const isEditing = editing && editing.key === k && editing.month === selectedMonthKey;
                       const current = getVal(size, c, selectedMonthKey);
