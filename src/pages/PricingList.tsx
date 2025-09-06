@@ -19,7 +19,7 @@ type OverrideMap = Record<string, Partial<Record<MonthKeyAll, number>>>; // key 
 const MONTH_OPTIONS = [
   { key: 'شهر واحد', label: 'شهرياً', months: 1 },
   { key: '2 أشهر', label: 'كل شهرين', months: 2 },
-  { key: '3 أ��هر', label: 'كل 3 أشهر', months: 3 },
+  { key: '3 أشهر', label: 'كل 3 أشهر', months: 3 },
   { key: '6 أشهر', label: 'كل 6 أشهر', months: 6 },
   { key: 'سنة كاملة', label: 'سنوي', months: 12 },
 ] as const;
@@ -132,15 +132,35 @@ export default function PricingList() {
                   {CUSTOMERS.map(c => (
                     <th key={c} className="p-3 font-medium">{c}</th>
                   ))}
-                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">الحجم</th>
+                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">��لحجم</th>
                 </tr>
               </thead>
               <tbody>
                 {sizesForLevel.map(size => (
                   <tr key={size} className="border-b hover:bg-background/50">
-                    {CUSTOMERS.map(c => (
-                      <td key={c} className="p-3">{priceFor(size, c)}</td>
-                    ))}
+                    {CUSTOMERS.map(c => {
+                      const k = keyFor(size, c);
+                      const isEditing = editing && editing.key === k && editing.month === selectedMonthKey;
+                      const current = getVal(size, c, selectedMonthKey);
+                      return (
+                        <td key={c} className="p-3">
+                          {isEditing ? (
+                            <input
+                              autoFocus
+                              type="number"
+                              className="w-24 rounded-md border px-2 py-1 bg-background"
+                              defaultValue={current ?? ''}
+                              onBlur={(e) => { const v = e.target.value.trim(); setVal(size, c, selectedMonthKey, v === '' ? null : Number(v)); setEditing(null); }}
+                              onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); if (e.key === 'Escape') setEditing(null); }}
+                            />
+                          ) : (
+                            <button className="text-right w-full" onClick={() => setEditing({ key: k, month: selectedMonthKey })}>
+                              {priceFor(size, c)}
+                            </button>
+                          )}
+                        </td>
+                      );
+                    })}
                     <td className="p-3 text-center font-semibold bg-amber-50 dark:bg-white/5">{size}</td>
                   </tr>
                 ))}
