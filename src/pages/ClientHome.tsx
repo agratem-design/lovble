@@ -564,7 +564,7 @@ export default function ClientHome() {
                         className="flex-1"
                         onClick={() => {
                           const months = packageById[billboard.id] || 1;
-                          const customer = customerTypeById[billboard.id] || CUSTOMERS[0];
+                          const customer = customerTypeById[billboard.id] || defaultCustomer;
                           const price = getPriceFor(billboard.size, (billboard as any).level, customer, months) ?? 0;
                           toast({ title: 'تم إضافة حجز', description: `تم اختيار ${customer} لمدة ${months} شهر بإجمالي ${price.toLocaleString()} د.ل` });
                         }}
