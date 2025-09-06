@@ -207,7 +207,7 @@ export default function PricingList() {
                       const isEditing = editing && editing.key === k && editing.month === selectedMonthKey;
                       const current = getVal(size, c, selectedMonthKey);
                       return (
-                        <td key={c} className="p-3">
+                        <td key={`col-${c}`} className="p-3">
                           {isEditing ? (
                             <input
                               autoFocus
