@@ -35,10 +35,7 @@ function buildInvoiceHtml(props: Props) {
       <td class="cell">${(b as any).district || ''}</td>
       <td class="cell">${b.location || ''}</td>
       <td class="cell">${b.size}${(b as any).level ? ' / ' + (b as any).level : ''}</td>
-      <td class="cell">${(b as any).faces ?? '—'}</td>
-      <td class="cell">${(b as any).direction ?? '—'}</td>
       <td class="cell">${format(unit)} د.ل</td>
-      <td class="cell">${(b as any).expiryDate || '—'}</td>
       <td class="cell">${b.status === 'rented' ? 'محجوز' : b.status === 'maintenance' ? 'صيانة' : 'متاح'}</td>
     </tr>
   `).join('');
@@ -54,7 +51,7 @@ function buildInvoiceHtml(props: Props) {
       .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
       .title{font-weight:800;font-size:26px;letter-spacing:.5px}
       .brand{display:flex;align-items:center;gap:12px}
-      .brand-mark{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,#d4af37,#b8860b)}
+      .brand-mark{width:56px;height:56px;border-radius:12px;object-fit:cover}
       table{width:100%;border-collapse:collapse}
       th{background:#f7f3e3;color:#000;padding:10px 8px;text-align:right;border-bottom:2px solid #e6d698;font-weight:700}
       td.cell{padding:8px;border-bottom:1px solid #eee;text-align:right;vertical-align:middle}
@@ -69,6 +66,10 @@ function buildInvoiceHtml(props: Props) {
         <div class="title">فاتورة اللوحات المختارة</div>
         <div class="meta">التاريخ: ${new Date().toLocaleDateString('ar-LY')}</div>
       </div>
+      <div class="brand" style="margin-bottom:8px">
+        <img class="brand-mark" src="https://cdn.builder.io/api/v1/image/assets%2Ffc68c2d70dd74affa9a5bbf7eee66f4a%2F8d67e8499cfc4a8caf22e6c6835ab764?format=webp&width=256" alt="شعار الفارس الذهبي" />
+        <div class="title">الفارس الذهبي</div>
+      </div>
       <table>
         <thead>
           <tr>
@@ -78,10 +79,7 @@ function buildInvoiceHtml(props: Props) {
             <th>المنطقة</th>
             <th>أقرب نقطة دالة</th>
             <th>المقاس</th>
-            <th>عدد الأوجه</th>
-            <th>الوجهة</th>
             <th>السعر</th>
-            <th>تاريخ الإنتهاء</th>
             <th>الحالة</th>
           </tr>
         </thead>
@@ -90,7 +88,7 @@ function buildInvoiceHtml(props: Props) {
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="10" style="padding:8px;text-align:left">الإجمالي الكلي</td>
+            <td colspan="7" style="padding:8px;text-align:left">الإجمالي الكلي</td>
             <td style="padding:8px;text-align:right">${format(grand)} د.ل</td>
           </tr>
         </tfoot>
