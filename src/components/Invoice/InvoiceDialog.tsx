@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import * as UIDialog from '@/components/ui/dialog';
 import type { Billboard } from '@/types';
 import { CustomerType, CUSTOMERS, getPriceFor } from '@/data/pricing';
 
@@ -114,16 +114,16 @@ export default function InvoiceDialog(props: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl">
-        <DialogHeader>
-          <DialogTitle>فاتور�� اللوحات المختارة</DialogTitle>
-        </DialogHeader>
+    <UIDialog.Dialog open={open} onOpenChange={onOpenChange}>
+      <UIDialog.DialogContent className="max-w-5xl">
+        <UIDialog.DialogHeader>
+          <UIDialog.DialogTitle>فاتورة اللوحات المختارة</UIDialog.DialogTitle>
+        </UIDialog.DialogHeader>
         <div className="overflow-x-auto">
           <div className="text-sm text-muted-foreground mb-3">راجع تفاصيل اللوحات ثم اطبع الفاتورة.</div>
           <Button onClick={handlePrint} className="bg-primary text-primary-foreground">طباعة</Button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </UIDialog.DialogContent>
+    </UIDialog.Dialog>
   );
 }
