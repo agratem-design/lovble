@@ -105,7 +105,7 @@ export default function PricingList() {
   const keyFor = (size: string, customer: string) => `${selectedLevel}__${size}__${customer}`;
 
   const getBase = (size: string, customer: string, month: MonthKeyAll): number | null => {
-    const row = PRICING.find(r => r['المقاس'] === size && r['المستوى'] === selectedLevel && r['الزبون'] === (customer as any));
+    const row = PRICING.find(r => r['المقاس'] === size && r['المست��ى'] === selectedLevel && r['الزبون'] === (customer as any));
     return row ? normalize((row as any)[month]) : null;
   };
 
@@ -142,7 +142,7 @@ export default function PricingList() {
             <div className="flex items-center gap-2">
               {MONTH_OPTIONS.map(opt => (
                 <button
-                  key={opt.key}
+                  key={`m-${opt.key}`}
                   className={`px-3 py-1.5 rounded-lg text-sm border transition-fast ${selectedMonthKey === opt.key ? 'bg-primary text-primary-foreground border-primary' : 'bg-background text-foreground border-border hover:bg-muted'}`}
                   onClick={() => setSelectedMonthKey(opt.key)}
                 >
