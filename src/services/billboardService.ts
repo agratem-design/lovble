@@ -5,7 +5,7 @@ import billboardCity from '@/assets/billboard-city.jpg';
 import billboardCoastal from '@/assets/billboard-coastal.jpg';
 import { supabase } from '@/integrations/supabase/client';
 
-// تطبيع أحجام اللوحات لتكون ��توافقة مع مفاتيح التسعير
+// تطبيع أحجام اللوحات لتكون متوافقة مع مفاتيح التسعير
 const normalizeBillboardSize = (size: string): string => {
   if (!size) return '4x12';
 
@@ -40,7 +40,7 @@ const normalizeBillboardSize = (size: string): string => {
   if (parts.length === 2) {
     const [width, height] = parts.map(p => parseInt(p)).filter(n => !isNaN(n));
     if (width && height) {
-      // ترتيب الأبعاد: العرض × الارتفاع (الأصغر أولاً عادة)
+      // ترتيب الأبعاد: العرض × ال��رتفاع (الأصغر أولاً عادة)
       if (width <= height) {
         return `${width}x${height}`;
       } else {
@@ -253,7 +253,7 @@ function processBillboardFromSupabase(row: any, index: number): Billboard {
 function processBillboardFromCSV(row: any, index: number): Billboard {
   const id = row['ر.م'] || `billboard-${index + 1}`;
   const name = row['اسم لوحة'] || `لوحة ${index + 1}`;
-  const location = row['اقرب نقطة دالة'] || 'غير محدد';
+  const location = row['اقرب نقطة ��الة'] || 'غير محدد';
   const municipality = row['البلدية'] || 'غير محدد';
   const city = row['مدينة'] || 'طرابلس';
   const area = row['منطقة'] || row['الحي'] || row['District'] || municipality;
@@ -329,6 +329,8 @@ function processBillboardFromCSV(row: any, index: number): Billboard {
     installationPrice,
     status,
     city,
+    district: area,
+    municipality,
     coordinates,
     description: `لوحة إعلانية ${size} في ${location}`,
     image: imageUrl,
