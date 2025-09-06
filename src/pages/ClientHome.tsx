@@ -113,10 +113,16 @@ export default function ClientHome() {
       .filter(Boolean)
   )] as string[];
 
-  // ت��كد من مزامنة العقود المختارة مع العملاء المختارين
+  // تأكد من مزامنة العقود المختارة مع العملاء المختارين بدون تحديثات غير ضرورية
   useEffect(() => {
     const valid = new Set(contracts);
-    setSelectedContracts(prev => prev.filter(c => valid.has(c)));
+    setSelectedContracts(prev => {
+      const next = prev.filter(c => valid.has(c));
+      if (next.length === prev.length && next.every((v, i) => v === prev[i])) {
+        return prev;
+      }
+      return next;
+    });
   }, [contracts]);
 
   const totalPages = Math.max(1, Math.ceil(filteredBillboards.length / pageSize));
@@ -171,7 +177,7 @@ export default function ClientHome() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-6"></div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">جاري تحميل اللوحات الإعلانية</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">جاري ��حميل اللوحات الإعلانية</h2>
           <p className="text-muted-foreground">يرجى الانتظار...</p>
         </div>
       </div>
@@ -616,7 +622,7 @@ export default function ClientHome() {
                       {selectedBillboards.length} لوحة مختارة
                     </h3>
                     <p className="text-white/80 text-sm">
-                      الإجمالي: {getSelectedTotal().toLocaleString()} د.ل
+                      الإجمالي: {getSelectedTotal().toLocaleString()} ��.ل
                     </p>
                   </div>
 
