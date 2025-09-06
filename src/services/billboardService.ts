@@ -5,7 +5,7 @@ import billboardCity from '@/assets/billboard-city.jpg';
 import billboardCoastal from '@/assets/billboard-coastal.jpg';
 import { supabase } from '@/integrations/supabase/client';
 
-// تطبيع أحجام اللوحات لتكون متوافقة مع مفاتيح التسعير
+// تطبيع أحجام اللوحات لتكون ��توافقة مع مفاتيح التسعير
 const normalizeBillboardSize = (size: string): string => {
   if (!size) return '4x12';
 
@@ -249,14 +249,14 @@ function processBillboardFromSupabase(row: any, index: number): Billboard {
   };
 }
 
-// معالج�� بيانات اللوحة من CSV
+// معالجة بيانات اللوحة من CSV
 function processBillboardFromCSV(row: any, index: number): Billboard {
   const id = row['ر.م'] || `billboard-${index + 1}`;
   const name = row['اسم لوحة'] || `لوحة ${index + 1}`;
   const location = row['اقرب نقطة دالة'] || 'غير محدد';
   const municipality = row['البلدية'] || 'غير محدد';
   const city = row['مدينة'] || 'طرابلس';
-  const area = row['منطقة'] || municipality;
+  const area = row['منطقة'] || row['الحي'] || row['District'] || municipality;
   const rawSize = row['حجم'] || '12X4';
   const size = normalizeBillboardSize(rawSize);
   const coordinates = row['احداثي - GPS'] || '32.8872,13.1913';
@@ -384,7 +384,7 @@ export async function loadBillboards(): Promise<Billboard[]> {
   } catch (error) {
     console.error('[Service] خطأ في تحميل البيانات من Supabase/Google Sheets:', error);
 
-    // البيانات الافتراضية في حالة فشل ��لتحميل
+    // البيانات الافتراضية في حالة فشل التحميل
     const images = [billboardHighway, billboardCity, billboardCoastal];
 
     return [
