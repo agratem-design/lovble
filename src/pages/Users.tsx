@@ -39,6 +39,8 @@ interface ProfileRow {
   email: string | null;
   role: string | null;
   created_at: string | null;
+  allowed_clients?: string[] | null;
+  price_tier?: string | null;
 }
 
 export default function Users() {
