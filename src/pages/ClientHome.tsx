@@ -114,7 +114,7 @@ export default function ClientHome() {
       .filter(Boolean)
   )] as string[];
 
-  // تأكد من مزامنة العقود المختارة مع العملاء المختارين بدون تحديثات غير ضرورية
+  // تأكد من مزامنة العقود المختارة مع العملاء المختارين بدون تحد��ثات غير ضرورية
   useEffect(() => {
     const valid = new Set(contracts);
     setSelectedContracts(prev => {
@@ -197,10 +197,6 @@ export default function ClientHome() {
                 alt="شعار الفارس الذهبي"
                 className="w-16 h-16 rounded-2xl shadow-glow object-cover"
               />
-              <div>
-                <h1 className="text-3xl font-bold text-white mb-2">الفارس الذهبي</h1>
-                <p className="text-white/80">الدعاية والإعلان</p>
-              </div>
             </div>
             
             <div className="flex items-center gap-4">
@@ -671,7 +667,7 @@ export default function ClientHome() {
                       });
                     }}>
                       <SelectTrigger className="bg-white/10 text-white border-white/20">
-                        <SelectValue placeholder="نوع الزبون"></SelectValue>
+                        <SelectValue placeholder="نوع ال��بون"></SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {CUSTOMERS.map(c => (
