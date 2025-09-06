@@ -99,7 +99,17 @@ export default function Users() {
       setRows([]);
       setCount(0);
     } else {
-      setRows(resp.data || []);
+      const normalize = (v: any): string[] | null => {
+        if (!v) return null;
+        if (Array.isArray(v)) return v.map(String);
+        return null;
+      };
+      const data = (resp.data || []).map((d: any) => ({
+        ...d,
+        allowed_clients: normalize(d.allowed_clients),
+        price_tier: d.price_tier ?? null,
+      }));
+      setRows(data);
       setCount(resp.count || 0);
     }
     setLoading(false);
@@ -171,7 +181,7 @@ export default function Users() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>الاسم</TableHead>
-                    <TableHead>البريد الإلك��روني</TableHead>
+                    <TableHead>البريد الإلكتروني</TableHead>
                     <TableHead>الدور</TableHead>
                     <TableHead>تاريخ الإنشاء</TableHead>
                     <TableHead>المعرف</TableHead>
