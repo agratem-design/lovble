@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import MultiSelect from '@/components/ui/multi-select';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import * as UIDialog from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { PRICING, CustomerType, CUSTOMERS } from '@/data/pricing';
 
@@ -234,31 +234,31 @@ export default function PricingList() {
         </CardContent>
       </Card>
 
-      <Dialog open={addCatOpen} onOpenChange={setAddCatOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>إضافة فئة جديدة</DialogTitle>
-          </DialogHeader>
+      <UIDialog.Dialog open={addCatOpen} onOpenChange={setAddCatOpen}>
+        <UIDialog.DialogContent>
+          <UIDialog.DialogHeader>
+            <UIDialog.DialogTitle>إضافة فئة جديدة</UIDialog.DialogTitle>
+          </UIDialog.DialogHeader>
           <Input placeholder="اسم الفئة (مثال: المدينة)" value={newCatName} onChange={e=>setNewCatName(e.target.value)} />
-          <DialogFooter>
+          <UIDialog.DialogFooter>
             <Button variant="outline" onClick={()=>setAddCatOpen(false)}>إلغاء</Button>
             <Button onClick={saveNewCategory}>حفظ</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </UIDialog.DialogFooter>
+        </UIDialog.DialogContent>
+      </UIDialog.Dialog>
 
-      <Dialog open={addSizeOpen} onOpenChange={setAddSizeOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>إضافة مقاس</DialogTitle>
-          </DialogHeader>
+      <UIDialog.Dialog open={addSizeOpen} onOpenChange={setAddSizeOpen}>
+        <UIDialog.DialogContent>
+          <UIDialog.DialogHeader>
+            <UIDialog.DialogTitle>إضافة مقاس</UIDialog.DialogTitle>
+          </UIDialog.DialogHeader>
           <Input placeholder="أدخل المقاس (مثال 4x12)" value={newSize} onChange={e=>setNewSize(e.target.value)} />
-          <DialogFooter>
+          <UIDialog.DialogFooter>
             <Button variant="outline" onClick={()=>setAddSizeOpen(false)}>إلغاء</Button>
             <Button onClick={saveNewSize}>حفظ</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </UIDialog.DialogFooter>
+        </UIDialog.DialogContent>
+      </UIDialog.Dialog>
     </div>
   );
 }
