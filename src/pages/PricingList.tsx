@@ -102,7 +102,7 @@ export default function PricingList() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-2xl">الأسعار</CardTitle>
-              <p className="text-muted-foreground text-sm">إدارة أسعار الخدمات الإعل��نية حسب فئة العميل</p>
+              <p className="text-muted-foreground text-sm">إدارة أسعار الخدمات الإعلانية حسب فئة العميل</p>
             </div>
             <div className="flex items-center gap-2">
               {MONTH_OPTIONS.map(opt => (
@@ -121,6 +121,9 @@ export default function PricingList() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">الأساسية (عادي/مسوق/شركات)</SelectItem>
+                  {Array.from(new Set([...new Set(PRICING.map(p=>p['الزبون'] as string).filter(c=>!PRIMARY_CUSTOMERS.includes(c))), ...extraCustomers])).map(c => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Button variant="outline" className="ml-2" onClick={() => { const name = prompt('اسم الفئة الجديدة:'); if(!name) return; setOtherCustomer(name); setExtraCustomers(prev=>{ const next=Array.from(new Set([...prev,name])); localStorage.setItem(extraCustomersLsKey, JSON.stringify(next)); return next; }); }}>إضافة فئة</Button>
