@@ -234,6 +234,8 @@ function processBillboardFromSupabase(row: any, index: number): Billboard {
     installationPrice,
     status: normalizeStatus(row['Status']),
     city: String(city),
+    district: String(district || ''),
+    municipality: String(municipality || ''),
     coordinates: String(coordinates || ''),
     description: `لوحة إعلانية ${size} في ${municipality || location}`,
     image: imageUrl,
@@ -247,7 +249,7 @@ function processBillboardFromSupabase(row: any, index: number): Billboard {
   };
 }
 
-// معالجة بيانات اللوحة من CSV
+// معالج�� بيانات اللوحة من CSV
 function processBillboardFromCSV(row: any, index: number): Billboard {
   const id = row['ر.م'] || `billboard-${index + 1}`;
   const name = row['اسم لوحة'] || `لوحة ${index + 1}`;
@@ -356,7 +358,7 @@ export async function loadBillboards(): Promise<Billboard[]> {
     }
 
     if (dbError) {
-      console.warn('[Service] تعذر جلب Supabase، سي��م استخدام Google Sheets. الخطأ:', dbError.message);
+      console.warn('[Service] تعذر جلب Supabase، سيتم استخدام Google Sheets. الخطأ:', dbError.message);
     } else {
       console.log('[Service] جدول billboards فارغ أو غير متاح، سيتم استخدام Google Sheets');
     }
@@ -382,7 +384,7 @@ export async function loadBillboards(): Promise<Billboard[]> {
   } catch (error) {
     console.error('[Service] خطأ في تحميل البيانات من Supabase/Google Sheets:', error);
 
-    // البيانات الافتراضية في حالة فشل التحميل
+    // البيانات الافتراضية في حالة فشل ��لتحميل
     const images = [billboardHighway, billboardCity, billboardCoastal];
 
     return [
