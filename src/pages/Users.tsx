@@ -11,6 +11,9 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/sonner';
 import { supabase } from '@/integrations/supabase/client';
+import MultiSelect from '@/components/ui/multi-select';
+import { CUSTOMERS } from '@/data/pricing';
+import { loadBillboards } from '@/services/billboardService';
 
 interface Permissions {
   can_view_unavailable?: boolean;
