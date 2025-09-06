@@ -28,6 +28,10 @@ const MONTH_OPTIONS = [
 
 type MonthKey = typeof MONTH_OPTIONS[number]['key'];
 
+const PRIMARY_CUSTOMERS: string[] = ['عادي', 'مسوق', 'شركات'];
+const extraCustomersLsKey = 'pricing_extra_customers_v1';
+const customSizesLsKey = 'pricing_custom_sizes_v1';
+
 export default function PricingList() {
   const allLevels = useMemo(() => Array.from(new Set(PRICING.map(p => p['المستوى']))), []);
   const allSizes = useMemo(() => Array.from(new Set(PRICING.map(p => p['المقاس']))), []);
