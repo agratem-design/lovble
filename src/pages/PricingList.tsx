@@ -19,7 +19,7 @@ type OverrideMap = Record<string, Partial<Record<MonthKeyAll, number>>>; // key 
 const MONTH_OPTIONS = [
   { key: 'شهر واحد', label: 'شهرياً', months: 1 },
   { key: '2 أشهر', label: 'كل شهرين', months: 2 },
-  { key: '3 أشهر', label: 'كل 3 أشهر', months: 3 },
+  { key: '3 أ��هر', label: 'كل 3 أشهر', months: 3 },
   { key: '6 أشهر', label: 'كل 6 أشهر', months: 6 },
   { key: 'سنة كاملة', label: 'سنوي', months: 12 },
 ] as const;
@@ -34,6 +34,16 @@ export default function PricingList() {
   const [selectedMonthKey, setSelectedMonthKey] = useState<MonthKey>('شهر واحد');
   const [sizeFilter, setSizeFilter] = useState<string[]>([]);
 
+  const [overrides, setOverrides] = useState<OverrideMap>(() => {
+    try {
+      const raw = localStorage.getItem(lsKey);
+      return raw ? (JSON.parse(raw) as OverrideMap) : {};
+    } catch {
+      return {};
+    }
+  });
+  const [editing, setEditing] = useState<{ key: string; month: MonthKeyAll } | null>(null);
+
   const sizesForLevel = useMemo(() => {
     const set = new Set(
       PRICING.filter(r => r['المستوى'] === selectedLevel).map(r => r['المقاس'])
@@ -42,9 +52,31 @@ export default function PricingList() {
     return sizeFilter.length ? arr.filter(s => sizeFilter.includes(s)) : arr;
   }, [selectedLevel, sizeFilter]);
 
-  const priceFor = (size: string, customer: CustomerType): string => {
+  const keyFor = (size: string, customer: CustomerType) => `${selectedLevel}__${size}__${customer}`;
+
+  const getBase = (size: string, customer: CustomerType, month: MonthKeyAll): number | null => {
     const row = PRICING.find(r => r['المقاس'] === size && r['المستوى'] === selectedLevel && r['الزبون'] === customer);
-    const v = row ? normalize((row as any)[selectedMonthKey]) : null;
+    return row ? normalize((row as any)[month]) : null;
+  };
+
+  const getVal = (size: string, customer: CustomerType, month: MonthKeyAll): number | null => {
+    const k = keyFor(size, customer);
+    const o = overrides[k]?.[month];
+    return o ?? getBase(size, customer, month);
+  };
+
+  const setVal = (size: string, customer: CustomerType, month: MonthKeyAll, value: number | null) => {
+    const k = keyFor(size, customer);
+    setOverrides(prev => {
+      const next: OverrideMap = { ...prev, [k]: { ...(prev[k] || {}) } };
+      if (value == null || isNaN(value as any)) delete next[k][month]; else next[k][month] = value;
+      localStorage.setItem(lsKey, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const priceFor = (size: string, customer: CustomerType): string => {
+    const v = getVal(size, customer, selectedMonthKey);
     return v == null ? '—' : `${v.toLocaleString()} د.ل`;
   };
 
