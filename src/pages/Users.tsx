@@ -61,7 +61,37 @@ export default function Users() {
     setError(null);
     const from = (pageIndex - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
-    // حاول أولاً مع assigned_client، وإن لم يوجد العمود فfallback بدونه
+
+    try {
+      const { data: sess } = await supabase.auth.getSession();
+      const token = sess?.session?.access_token || '';
+      const res = await fetch(`/.netlify/functions/admin-list-profiles?from=${from}&to=${to}` , {
+        headers: { Authorization: token ? `Bearer ${token}` : '' }
+      });
+      if (res.ok) {
+        const json = await res.json();
+        const normalize = (v: any): string[] | null => {
+          if (!v) return null;
+          if (Array.isArray(v)) return v.map(String);
+          return null;
+        };
+        const data = (json.data || []).map((d: any) => ({
+          ...d,
+          allowed_clients: normalize(d.allowed_clients),
+          price_tier: d.price_tier ?? null,
+        }));
+        setRows(data);
+        setCount(json.count || 0);
+        setHasAssignedClient(Boolean(json.hasAssignedClient));
+        setHasPermissions(Boolean(json.hasPermissions));
+        setLoading(false);
+        return;
+      }
+    } catch (e: any) {
+      // fallthrough to direct supabase query
+    }
+
+    // Fallback to direct query (may be limited by RLS)
     let resp = await supabase
       .from('profiles')
       .select('id,name,email,role,created_at,allowed_clients,price_tier', { count: 'exact' })
@@ -69,8 +99,6 @@ export default function Users() {
       .range(from, to);
 
     if (resp.error && (resp.error.code === '42703' || /does not exist/i.test(resp.error.message))) {
-      // probe which column missing by trying assigned_client then permissions separately
-      // try without permissions
       let probe = await supabase
         .from('profiles')
         .select('id,name,email,role,created_at', { count: 'exact' })
@@ -79,7 +107,6 @@ export default function Users() {
 
       if (probe.error && (probe.error.code === '42703' || /does not exist/i.test(probe.error.message))) {
         setHasAssignedClient(false);
-        // try without both
         resp = await supabase
           .from('profiles')
           .select('id,name,email,role,created_at', { count: 'exact' })
@@ -174,7 +201,7 @@ export default function Users() {
             <div className="text-sm text-warning mt-2">حقل الزبون المخصص غير موجود في profiles. يمكن إضافته لاحقاً.</div>
           )}
           {!hasPermissions && (
-            <div className="text-sm text-warning mt-1">حقل الصلاحيات غير موجود في profiles. يمكن إضافته لاحقاً.</div>
+            <div className="text-sm text-warning mt-1">��قل الصلاحيات غير موجود في profiles. يمكن إضافته لاحقاً.</div>
           )}
         </CardHeader>
         <CardContent>
