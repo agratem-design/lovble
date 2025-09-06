@@ -59,7 +59,7 @@ export default function ClientHome() {
     fetchBillboards();
   }, []);
 
-  // للأدم��: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول تحميل
+  // للأدمن: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول تحميل
   useEffect(() => {
     if (isAdmin && selectedStatuses.length === 1 && selectedStatuses[0] === 'available') {
       setSelectedStatuses(['rented', 'near']);
@@ -281,7 +281,7 @@ export default function ClientHome() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between mb-4">
-              <div className="text-sm text-muted-foreground">استخدم الفلاتر للعثور على اللو��ات المناسبة</div>
+              <div className="text-sm text-muted-foreground">استخدم الفلاتر للعثور على اللوحات المناسبة</div>
               <Button variant="outline" onClick={() => setShowMap(v => !v)}>
                 {showMap ? 'إخفاء الخريطة' : 'إظهار الخريطة'}
               </Button>
@@ -449,7 +449,7 @@ export default function ClientHome() {
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-muted-foreground">السعر حسب الباقة:</span>
                           <span className="font-semibold text-primary">
-                            {(() => { const months = packageById[billboard.id] || 1; const customer = customerTypeById[billboard.id] || CUSTOMERS[0]; const price = getPriceFor(billboard.size, (billboard as any).level, customer, months); return (price ?? 0).toLocaleString(); })()} د.ل
+                            {(() => { const months = packageById[billboard.id] || 1; const customer = customerTypeById[billboard.id] || defaultCustomer; const price = getPriceFor(billboard.size, (billboard as any).level, customer, months); return (price ?? 0).toLocaleString(); })()} د.ل
                           </span>
                         </div>
 
