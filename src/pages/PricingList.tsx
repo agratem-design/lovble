@@ -29,6 +29,7 @@ const MONTH_OPTIONS = [
 type MonthKey = typeof MONTH_OPTIONS[number]['key'];
 
 const PRIMARY_CUSTOMERS: string[] = ['عادي', 'مسوق', 'شركات'];
+const PRIMARY_SENTINEL = '__primary__';
 const extraCustomersLsKey = 'pricing_extra_customers_v1';
 const customSizesLsKey = 'pricing_custom_sizes_v1';
 
