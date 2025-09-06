@@ -59,7 +59,7 @@ export default function ClientHome() {
     fetchBillboards();
   }, []);
 
-  // للأدمن: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول تحميل
+  // للأدم��: التحويل تلقائياً لعرض غير المتاح والقريب الانتهاء عند أول تحميل
   useEffect(() => {
     if (isAdmin && selectedStatuses.length === 1 && selectedStatuses[0] === 'available') {
       setSelectedStatuses(['rented', 'near']);
@@ -143,7 +143,7 @@ export default function ClientHome() {
       const billboard = billboards.find(b => b.id === id);
       if (!billboard) return total;
       const months = packageById[id] || 1;
-      const customer = customerTypeById[id] || CUSTOMERS[0];
+      const customer = customerTypeById[id] || defaultCustomer;
       const price = getPriceFor(billboard.size, (billboard as any).level, customer, months) ?? 0;
       return total + price;
     }, 0);
@@ -169,7 +169,7 @@ export default function ClientHome() {
       description: `تم إرسال طلب حجز ${selectedBillboards.length} لوحة بإجمالي ${getSelectedTotal().toLocaleString()} د.ل`,
     });
 
-    // إعادة تعي��ن الاختيارات
+    // إعادة تعيين الاختيارات
     setSelectedBillboards([]);
   };
 
@@ -281,7 +281,7 @@ export default function ClientHome() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between mb-4">
-              <div className="text-sm text-muted-foreground">استخدم الفلاتر للعثور على اللوحات المناسبة</div>
+              <div className="text-sm text-muted-foreground">استخدم الفلاتر للعثور على اللو��ات المناسبة</div>
               <Button variant="outline" onClick={() => setShowMap(v => !v)}>
                 {showMap ? 'إخفاء الخريطة' : 'إظهار الخريطة'}
               </Button>
