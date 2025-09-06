@@ -121,7 +121,7 @@ export default function PricingList() {
                   <SelectValue placeholder="فئة أخرى" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">الأساسية (عادي/مسوق/شركات)</SelectItem>
+                  <SelectItem value={PRIMARY_SENTINEL}>الأساسية (عادي/مسوق/شركات)</SelectItem>
                   {Array.from(new Set([...new Set(PRICING.map(p=>p['الزبون'] as string).filter(c=>!PRIMARY_CUSTOMERS.includes(c))), ...extraCustomers])).map(c => (
                     <SelectItem key={c} value={c}>{c}</SelectItem>
                   ))}
@@ -162,7 +162,7 @@ export default function PricingList() {
                   {(otherCustomer ? [otherCustomer] : PRIMARY_CUSTOMERS).map(c => (
                     <th key={c} className="p-3 font-medium">{c}</th>
                   ))}
-                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">الحجم</th>
+                  <th className="p-3 text-center w-24 bg-amber-50 dark:bg-white/5">��لحجم</th>
                 </tr>
               </thead>
               <tbody>
