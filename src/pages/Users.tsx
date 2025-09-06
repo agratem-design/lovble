@@ -117,6 +117,15 @@ export default function Users() {
 
   useEffect(() => {
     fetchPage(page);
+    (async () => {
+      try {
+        const bbs = await loadBillboards();
+        const clients = Array.from(new Set(bbs.map(b => (b as any).clientName).filter(Boolean))) as string[];
+        setAllClients(clients);
+      } catch (e) {
+        setAllClients([]);
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
