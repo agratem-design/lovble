@@ -133,7 +133,7 @@ export default function Users() {
 
   const handleSave = async (row: ProfileRow) => {
     setSavingId(row.id);
-    let payload: any = { role: row.role };
+    let payload: any = { role: row.role, price_tier: row.price_tier ?? null, allowed_clients: row.allowed_clients ?? null };
 
     let { error } = await supabase
       .from('profiles')
