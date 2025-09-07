@@ -148,7 +148,7 @@ export function BookingSummary({
             onClick={() => {
               const win = window.open('', '_blank');
               if (!win) return;
-              win.document.write(buildAlFaresOfferHtml(selectedBillboards as any, { months, customer }));
+              win.document.write(buildMinimalOfferHtml(selectedBillboards as any, { months, customer, logoUrl: 'https://cdn.builder.io/api/v1/image/assets%2Ffc68c2d70dd74affa9a5bbf7eee66f4a%2F684306a82024469997a03db98b279f4e?format=webp&width=256' }));
               win.document.close();
               win.focus();
             }}
