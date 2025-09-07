@@ -50,7 +50,7 @@ export const BillboardGridCard: React.FC<BillboardGridCardProps> = ({
   const isNearExpiry = daysRemaining !== null && daysRemaining <= 20;
 
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-border/50">
+    <Card className="overflow-hidden rounded-2xl bg-gradient-card border-0 shadow-card hover:shadow-luxury transition-smooth">
       <div className="relative">
         {/* صورة اللوحة */}
         <div className="aspect-video bg-muted relative overflow-hidden">
@@ -97,17 +97,17 @@ export const BillboardGridCard: React.FC<BillboardGridCardProps> = ({
         <CardContent className="p-4">
           {/* معرف اللوحة */}
           <div className="mb-3">
-            <h3 className="font-bold text-lg text-foreground">
+            <h3 className="font-extrabold text-2xl md:text-3xl text-foreground tracking-tight">
               {billboard.Billboard_Name || `لوحة رقم ${billboard.ID}`}
             </h3>
           </div>
 
           {/* الموقع */}
           <div className="space-y-2 mb-4">
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-base text-muted-foreground">
               <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
               <span className="truncate">
-                {billboard.District && billboard.City 
+                {billboard.District && billboard.City
                   ? `${billboard.District}, ${billboard.City}`
                   : billboard.Nearest_Landmark || 'غير محدد'
                 }
@@ -153,11 +153,8 @@ export const BillboardGridCard: React.FC<BillboardGridCardProps> = ({
 
           {/* السعر */}
           <div className="mb-4">
-            <div className="text-2xl font-bold text-primary">
-              {billboard.Price || '0'} <span className="text-base font-semibold">د.ل</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              السعر حسب الفترة
+            <div className="text-3xl font-extrabold text-primary tracking-tight">
+              {(billboard.Price && billboard.Price !== '0') ? billboard.Price : '—'} <span className="text-lg font-semibold">د.ل</span>
             </div>
           </div>
 
