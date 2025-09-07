@@ -5,6 +5,8 @@ import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X, ShoppingCart, Calculator, Printer } from 'lucide-react';
 import { CUSTOMERS, CustomerType, getPriceFor } from '@/data/pricing';
+import { useState } from 'react';
+import type { Billboard } from '@/types';
 
 interface BookingSummaryProps {
   selectedBillboards: Billboard[];
