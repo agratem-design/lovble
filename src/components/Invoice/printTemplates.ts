@@ -187,7 +187,8 @@ export function buildMinimalOfferHtml(items: Billboard[], meta: OfferMeta & { lo
     .top{display:flex;flex-direction:column;align-items:center;margin:8mm 0 4mm}
     .top img{height:22mm}
     .note{margin-top:3mm;color:#b8860b;font-weight:800}
-    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:4mm; table-layout:fixed}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:4mm; table-layout:fixed; direction:ltr}
+    thead, tbody, tr{direction:ltr}
     th,td{border:1px solid #e4e4e4;padding:4mm 3mm;text-align:right;vertical-align:middle;word-wrap:break-word}
     th{background:#111;color:#fff;font-weight:800}
     thead th:last-child{background:#d4af37;color:#000}
