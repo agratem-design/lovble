@@ -138,3 +138,87 @@ export function buildAlFaresOfferHtml(items: Billboard[], meta: OfferMeta) {
     </div>
   </body></html>`;
 }
+
+export function buildMinimalOfferHtml(items: Billboard[], meta: OfferMeta & { logoUrl?: string }) {
+  const months = meta.months;
+  const customer = meta.customer || CUSTOMERS[0];
+  const logo = meta.logoUrl || 'https://cdn.builder.io/api/v1/image/assets%2Ffc68c2d70dd74affa9a5bbf7eee66f4a%2F684306a82024469997a03db98b279f4e?format=webp&width=256';
+
+  const rows = items.map((b) => {
+    const size = (b as any).Size || (b as any).size || '';
+    const level = (b as any).Level || (b as any).level;
+    const unit = getPriceFor(size, level, customer, months) ?? 0;
+    const end = fmt(addMonths(new Date(), months), 'yyyy-MM-dd');
+    const url = mapUrl(b as any);
+    const city = (b as any).City || (b as any).city || '';
+    const district = (b as any).District || (b as any).district || '';
+    const landmark = (b as any).Nearest_Landmark || (b as any).location || '';
+    const faces = (b as any).Faces_Count || 'وجهين';
+    const code = (b as any).Billboard_Name || (b as any).id || (b as any).ID || '';
+    const img = (b as any).Image_URL ? `<img src="${(b as any).Image_URL}" style="height:40px;border-radius:6px"/>` : '';
+    return `<tr>
+      <td>${code}</td>
+      <td>${img}</td>
+      <td>${city}</td>
+      <td>${district}</td>
+      <td>${landmark}</td>
+      <td>${size}</td>
+      <td>${faces}</td>
+      <td>${formatCurrency(unit)}</td>
+      <td>${end}</td>
+      <td><a href="${url}">اضغط هنا</a></td>
+    </tr>`;
+  }).join('');
+
+  const grand = items.reduce((s, b) => {
+    const size = (b as any).Size || (b as any).size || '';
+    const level = (b as any).Level || (b as any).level;
+    const unit = getPriceFor(size, level, customer, months) ?? 0;
+    return s + (unit || 0);
+  }, 0);
+
+  return `<!doctype html><html dir="rtl" lang="ar"><head><meta charset="utf-8"/>
+  <title>عرض سعر</title>
+  <style>
+    @page { size: A4; margin: 14mm; }
+    body{font-family:'Cairo','Tajawal',system-ui,sans-serif;color:#111}
+    .top{display:flex;flex-direction:column;align-items:center;margin-bottom:8px}
+    .top img{height:64px}
+    .note{margin-top:6px;color:#b8860b;font-weight:800}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:8px}
+    th,td{border:1px solid #e4e4e4;padding:8px;text-align:right}
+    th{background:#f5e7b3;color:#000;font-weight:800}
+    thead th:first-child{border-top-right-radius:8px}
+    thead th:last-child{border-top-left-radius:8px}
+    tbody tr:nth-child(even){background:#fafafa}
+    tfoot td{font-weight:800}
+  </style></head><body>
+    <div class="top">
+      <img src="${logo}" alt="logo" />
+      <div class="note">العرض صالح لمدة 24 ساعة فقط</div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>رقم اللوحة</th>
+          <th>صورة اللوحة</th>
+          <th>المدينة</th>
+          <th>المنطقة</th>
+          <th>أقرب نقطة دالة</th>
+          <th>المقاس</th>
+          <th>عدد الأوجه</th>
+          <th>السعر</th>
+          <th>تاريخ الانتهاء</th>
+          <th>إحداثي اللوحة</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7" style="text-align:left">الإجمالي</td>
+          <td colspan="3">${formatCurrency(grand)}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </body></html>`;
+}
