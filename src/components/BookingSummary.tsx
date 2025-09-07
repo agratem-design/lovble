@@ -150,7 +150,7 @@ export function BookingSummary({
               if (!win) return;
               win.document.write(buildMinimalOfferHtml(selectedBillboards as any, { months, customer, logoUrl: 'https://cdn.builder.io/api/v1/image/assets%2Ffc68c2d70dd74affa9a5bbf7eee66f4a%2F684306a82024469997a03db98b279f4e?format=webp&width=256' }));
               win.document.close();
-              win.focus();
+              try { win.focus(); win.print(); } catch { setTimeout(()=>{ try{ win.focus(); win.print(); } catch{} }, 300); }
             }}
           >
             <Printer className="h-4 w-4 ml-2" /> طباعة
