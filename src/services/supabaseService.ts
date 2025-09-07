@@ -56,8 +56,8 @@ export const fetchContracts = async (): Promise<Contract[]> => {
       .order('created_at', { ascending: false });
 
     if (err2) {
-      console.error('Failed fetching contracts from both tables:', err2?.message || JSON.stringify(err2));
-      throw err2;
+      console.warn('Failed fetching contracts from both tables:', err2?.message || JSON.stringify(err2));
+      return [];
     }
 
     const mapped: Contract[] = (v2 || []).map((c: any) => ({
@@ -89,8 +89,8 @@ export const fetchContracts = async (): Promise<Contract[]> => {
     console.log('Fetched contracts (contracts -> mapped):', mapped.length);
     return mapped;
   } catch (error: any) {
-    console.error('Error in fetchContracts:', error?.message || JSON.stringify(error));
-    throw error;
+    console.warn('Error in fetchContracts, returning empty list:', error?.message || JSON.stringify(error));
+    return [];
   }
 };
 
@@ -204,7 +204,16 @@ export const fetchDashboardStats = async () => {
       nearExpiryBillboardsList: nearExpiry
     };
   } catch (error: any) {
-    console.error('Error fetching dashboard stats:', error?.message || JSON.stringify(error));
-    throw error;
+    console.warn('Error fetching dashboard stats, returning defaults:', error?.message || JSON.stringify(error));
+    return {
+      totalBillboards: 0,
+      availableBillboards: 0,
+      rentedBillboards: 0,
+      nearExpiryBillboards: 0,
+      totalContracts: 0,
+      totalRevenue: 0,
+      availableBillboardsList: [],
+      nearExpiryBillboardsList: []
+    };
   }
 };
