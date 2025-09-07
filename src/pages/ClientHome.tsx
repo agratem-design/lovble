@@ -214,7 +214,7 @@ export default function ClientHome() {
               </div>
               {!isAdmin && (
                 <Button asChild variant="secondary" className="ml-2">
-                  <Link to="/auth">تسجيل دخول الأدمن</Link>
+                  <Link to="/auth">تسجي�� دخول الأدمن</Link>
                 </Button>
               )}
               {isAdmin && (
@@ -332,7 +332,7 @@ export default function ClientHome() {
                   options={contracts.map(c => ({ label: c, value: c }))}
                   value={selectedContracts}
                   onChange={setSelectedContracts}
-                  placeholder={selectedClients.length ? "عقود العميل" : "أرقام العقود"}
+                  placeholder={selectedClients.length ? "عقود العميل" : "أرقام العق��د"}
                 />
               )}
 
@@ -411,14 +411,21 @@ export default function ClientHome() {
                 
                 {/* زر الاختيار */}
                 <div className="absolute bottom-4 right-4">
-                  <div className="flex items-center space-x-2 bg-white/90 backdrop-blur-sm rounded-lg p-2">
+                  <div
+                    className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg p-2 cursor-pointer"
+                    onClick={(e) => { e.stopPropagation(); toggleBillboardSelection(billboard.id || String(billboard.ID)); }}
+                  >
                     <Checkbox
-                      id={`billboard-${billboard.id}`}
-                      checked={selectedBillboards.includes(billboard.id)}
-                      onCheckedChange={() => toggleBillboardSelection(billboard.id)}
+                      id={`billboard-${billboard.id || billboard.ID}`}
+                      checked={selectedBillboards.includes(billboard.id || String(billboard.ID))}
+                      onCheckedChange={() => toggleBillboardSelection(billboard.id || String(billboard.ID))}
                       className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                     />
-                    <label htmlFor={`billboard-${billboard.id}`} className="text-sm font-medium">
+                    <label
+                      htmlFor={`billboard-${billboard.id || billboard.ID}`}
+                      className="text-sm font-medium cursor-pointer"
+                      onClick={(e) => { e.preventDefault(); toggleBillboardSelection(billboard.id || String(billboard.ID)); }}
+                    >
                       اختيار
                     </label>
                   </div>
