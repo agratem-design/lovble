@@ -7,7 +7,7 @@ import { X, ShoppingCart, Calculator, Printer } from 'lucide-react';
 import { CUSTOMERS, CustomerType, getPriceFor } from '@/data/pricing';
 import { useState } from 'react';
 import type { Billboard } from '@/types';
-import { buildAlFaresOfferHtml } from '@/components/Invoice/printTemplates';
+import { buildMinimalOfferHtml } from '@/components/Invoice/printTemplates';
 
 interface BookingSummaryProps {
   selectedBillboards: Billboard[];
