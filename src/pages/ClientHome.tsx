@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import BillboardsMap from '@/components/Map/BillboardsMap';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import InvoiceDialog from '@/components/Invoice/InvoiceDialog';
+import QuoteDialog from '@/components/Invoice/QuoteDialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { MapPin, DollarSign, Search, Filter, ShoppingCart, Heart, Eye, Phone, Mail, Globe, User, FileText, Calendar, Hourglass } from 'lucide-react';
@@ -33,6 +34,7 @@ export default function ClientHome() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showMap, setShowMap] = useState(false);
   const [invoiceOpen, setInvoiceOpen] = useState(false);
+  const [quoteOpen, setQuoteOpen] = useState(false);
   const pageSize = 10;
   const { toast } = useToast();
   const { isAdmin, user, profile } = useAuth();
@@ -698,6 +700,12 @@ export default function ClientHome() {
                     >
                       طباعة فاتورة
                     </Button>
+                    <Button
+                      onClick={() => setQuoteOpen(true)}
+                      className="bg-white text-primary hover:bg-white/90 font-semibold"
+                    >
+                      عرض سعر
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -708,6 +716,13 @@ export default function ClientHome() {
         <InvoiceDialog
           open={invoiceOpen}
           onOpenChange={setInvoiceOpen}
+          items={billboards.filter(b => selectedBillboards.includes(b.id))}
+          monthsById={packageById}
+          customerById={customerTypeById as any}
+        />
+        <QuoteDialog
+          open={quoteOpen}
+          onOpenChange={setQuoteOpen}
           items={billboards.filter(b => selectedBillboards.includes(b.id))}
           monthsById={packageById}
           customerById={customerTypeById as any}
