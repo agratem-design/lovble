@@ -104,19 +104,30 @@ export const BillboardGridCard: React.FC<BillboardGridCardProps> = ({
 
           {/* الموقع */}
           <div className="space-y-2 mb-4">
-            <div className="flex items-center text-base text-muted-foreground">
-              <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-              <span className="truncate">
-                {billboard.District && billboard.City
-                  ? `${billboard.District}, ${billboard.City}`
-                  : billboard.Nearest_Landmark || 'غير محدد'
-                }
-              </span>
-            </div>
-            
-            {billboard.Nearest_Landmark && billboard.District && (
-              <div className="text-xs text-muted-foreground pr-6">
+            {/* السطر 1: المدينة (الموقع) */}
+            {(billboard.City || billboard.Municipality) && (
+              <div className="flex items-center text-lg text-foreground font-semibold">
+                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="truncate">{billboard.City || billboard.Municipality}</span>
+              </div>
+            )}
+
+            {/* السطر 2: أقرب نقطة دالة */}
+            {billboard.Nearest_Landmark && (
+              <div className="text-sm text-muted-foreground pr-6">
                 {billboard.Nearest_Landmark}
+              </div>
+            )}
+
+            {/* السطر 3: المنطقة + البلدية */}
+            {(billboard.District || billboard.Municipality) && (
+              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                {billboard.District && (
+                  <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5">{billboard.District}</span>
+                )}
+                {billboard.Municipality && (
+                  <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5">البلدية: {billboard.Municipality}</span>
+                )}
               </div>
             )}
           </div>
@@ -151,12 +162,6 @@ export const BillboardGridCard: React.FC<BillboardGridCardProps> = ({
             </div>
           )}
 
-          {/* السعر */}
-          <div className="mb-4">
-            <div className="text-3xl font-extrabold text-primary tracking-tight">
-              {(billboard.Price && billboard.Price !== '0') ? billboard.Price : '—'} <span className="text-lg font-semibold">د.ل</span>
-            </div>
-          </div>
 
           {/* أزرار الإجراءات */}
           {showBookingActions && (
