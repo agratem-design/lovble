@@ -107,7 +107,7 @@ export function BookingSummary({
               <SelectValue placeholder="المدة" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">شه�� واحد</SelectItem>
+              <SelectItem value="1">شهر واحد</SelectItem>
               <SelectItem value="2">شهران</SelectItem>
               <SelectItem value="3">3 أشهر</SelectItem>
               <SelectItem value="6">6 أشهر</SelectItem>
@@ -148,7 +148,7 @@ export function BookingSummary({
             onClick={() => {
               const win = window.open('', '_blank');
               if (!win) return;
-              win.document.write(buildPrintHtml(selectedBillboards, months, customer));
+              win.document.write(buildAlFaresOfferHtml(selectedBillboards as any, { months, customer }));
               win.document.close();
               win.focus();
             }}
