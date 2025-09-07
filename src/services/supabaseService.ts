@@ -61,7 +61,7 @@ export const fetchContracts = async (): Promise<Contract[]> => {
     }
 
     const mapped: Contract[] = (v2 || []).map((c: any) => ({
-      id: c.id,
+      // id غير متاح بالصيغة الرقمية في الجدول الحديث
       'Contract Number': String(c.id),
       'Customer Name': c.customer_name ?? '',
       'Contract Date': c.start_date ?? c.created_at ?? '',
