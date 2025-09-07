@@ -7,6 +7,7 @@ import { X, ShoppingCart, Calculator, Printer } from 'lucide-react';
 import { CUSTOMERS, CustomerType, getPriceFor } from '@/data/pricing';
 import { useState } from 'react';
 import type { Billboard } from '@/types';
+import { buildAlFaresOfferHtml } from '@/components/Invoice/printTemplates';
 
 interface BookingSummaryProps {
   selectedBillboards: Billboard[];
@@ -106,7 +107,7 @@ export function BookingSummary({
               <SelectValue placeholder="المدة" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">شهر واحد</SelectItem>
+              <SelectItem value="1">شه�� واحد</SelectItem>
               <SelectItem value="2">شهران</SelectItem>
               <SelectItem value="3">3 أشهر</SelectItem>
               <SelectItem value="6">6 أشهر</SelectItem>
