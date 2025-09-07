@@ -33,23 +33,63 @@ export const fetchAllBillboards = async (): Promise<Billboard[]> => {
   }
 };
 
-// جلب العقود
+// جلب العقود مع دعم جدولين محتملين واستخراج أخطاء أوضح
 export const fetchContracts = async (): Promise<Contract[]> => {
   try {
+    // المحاولة 1: جدول Contract (قديم يحتوي أعمدة بأسماء بمسافات)
     const { data, error } = await supabase
       .from('Contract')
       .select('*')
       .order('"Contract Number"', { ascending: false });
 
-    if (error) {
-      console.error('Error fetching contracts:', error);
-      throw error;
+    if (!error && Array.isArray(data)) {
+      console.log('Fetched contracts (Contract):', data.length);
+      return (data as any[]) as Contract[];
     }
 
-    console.log('Fetched contracts:', (data || []).length);
-    return data || [];
-  } catch (error) {
-    console.error('Error in fetchContracts:', error);
+    console.warn('Contract table not available or errored, falling back to contracts. Details:', error?.message || JSON.stringify(error));
+
+    // المحاولة 2: جدول contracts (حديث بحقول snake_case)
+    const { data: v2, error: err2 } = await supabase
+      .from('contracts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (err2) {
+      console.error('Failed fetching contracts from both tables:', err2?.message || JSON.stringify(err2));
+      throw err2;
+    }
+
+    const mapped: Contract[] = (v2 || []).map((c: any) => ({
+      id: c.id,
+      'Contract Number': String(c.id),
+      'Customer Name': c.customer_name ?? '',
+      'Contract Date': c.start_date ?? c.created_at ?? '',
+      Duration: undefined,
+      'End Date': c.end_date ?? '',
+      'Ad Type': c.ad_type ?? '',
+      'Total Rent': typeof c.rent_cost === 'number' ? c.rent_cost : Number(c.rent_cost) || 0,
+      'Installation Cost': 0,
+      Total: (typeof c.rent_cost === 'number' ? c.rent_cost : Number(c.rent_cost) || 0).toString(),
+      'Payment 1': undefined,
+      'Payment 2': undefined,
+      'Payment 3': undefined,
+      'Total Paid': undefined,
+      Remaining: undefined,
+      Level: undefined,
+      Phone: undefined,
+      Company: undefined,
+      'Print Status': undefined,
+      Discount: undefined,
+      'Renewal Status': undefined,
+      'Actual 3% Fee': undefined,
+      '3% Fee': undefined,
+    }));
+
+    console.log('Fetched contracts (contracts -> mapped):', mapped.length);
+    return mapped;
+  } catch (error: any) {
+    console.error('Error in fetchContracts:', error?.message || JSON.stringify(error));
     throw error;
   }
 };
@@ -127,24 +167,21 @@ export const fetchDashboardStats = async () => {
       fetchContracts()
     ]);
 
-    const availableBillboards = billboards.filter(b => 
+    const availableBillboards = billboards.filter(b =>
       b.Status === 'متاح' || b.Status === 'available' || !b.Contract_Number
     );
 
-    const rentedBillboards = billboards.filter(b => 
+    const rentedBillboards = billboards.filter(b =>
       b.Status === 'مؤجر' || b.Status === 'rented' || b.Contract_Number
     );
 
-    // حساب اللوحات القريبة من الانتهاء (20 يوم أو أقل)
     const nearExpiry = rentedBillboards.filter(billboard => {
       if (!billboard.Rent_End_Date) return false;
-      
       try {
         const endDate = new Date(billboard.Rent_End_Date);
         const today = new Date();
         const diffTime = endDate.getTime() - today.getTime();
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
         return diffDays <= 20 && diffDays > 0;
       } catch {
         return false;
@@ -166,8 +203,8 @@ export const fetchDashboardStats = async () => {
       availableBillboardsList: availableBillboards,
       nearExpiryBillboardsList: nearExpiry
     };
-  } catch (error) {
-    console.error('Error fetching dashboard stats:', error);
+  } catch (error: any) {
+    console.error('Error fetching dashboard stats:', error?.message || JSON.stringify(error));
     throw error;
   }
 };
